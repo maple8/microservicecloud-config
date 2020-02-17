@@ -1,0 +1,45 @@
+spring:
+  profiles:
+    active:
+    - dev
+
+---
+server:
+  port: 8001
+spring:
+  profiles: dev
+  application:
+    name: microservicecloud-config-dept-client
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource                  # 当前数据源操作类型
+    driver-class-name: com.mysql.jdbc.Driver                      # mysql驱动包
+    #    driver-class-name: org.gjt.mm.mysql.Driver               # mysql驱动包
+    url: jdbc:mysql://localhost:3306/cloudDB01                    # 数据库名称
+    username: root
+    password: nba106118
+    dbcp2:  # 数据库连接池配置
+      min-idle: 5                                                 # 数据库连接池的最小维持连接数
+      initial-size: 5                                             # 初始化连接数
+      max-total: 5                                                # 最大连接数
+      max-wait-millis: 200
+mybatis:  # mybatis整合
+  config-location: classpath:mybatis/mybatis.config.xml           # mybatis配置文件所在路径
+  type-aliases-package: com.maple.microservicecloudapi.entities   # 所有Entity别名类所在包
+  mapper-locations:
+  - classpath:mybatis/mapper/**/*.xml
+eureka:   # 将客户端[当前微服务]注册进eureka服务列表中
+  client:                                                         # 微服务客户端配置
+    service-url:                                                  # 微服务注册中心url配置
+      # 单个注册中心
+      defaultZone: http://localhost:7001/eureka                   # 注册中心地址
+      # 注册中心集群
+  #      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:                                                       # 当前微服务实例配置
+    instance-id: dept8001.com                       # 微服务别名设置
+    prefer-ip-address: true                                       # 访问路径显示IP地址设置[鼠标放置在服务名称上左下角会显示成IP地址]
+
+info:   # 微服务默认链接[微服务的个性化说明]访问的配置,微服务提供者
+  app.name: microservicecloud-config02
+  company.name: JiLi.com
+  build.artifactId: $project.artifactId$  # 获取变量值尚未成功....
+  build.version: $project.version$
